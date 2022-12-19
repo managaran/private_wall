@@ -22,7 +22,7 @@
             {% for message in messages %}
             <div class="card bg-primary my-2">
                 <div class="card-body">
-                    <h3 class="card-title">{{message.sender}} said {{message.time_span()}}:</h3>
+                    <h3 class="card-title">{{message.sender.first_name}} said {{message.time_span()}}:</h3>
                     <p class="card-text">{{message.content}}</p>
                 </div>
                 <div class="card-footer">
