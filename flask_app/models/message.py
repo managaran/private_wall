@@ -18,10 +18,8 @@ class Message:
     @classmethod
     def get_user_messages(cls, user_id):
 
-        # Fetch the user to associate with all the message objects
         receiver = user.User.get_by_id(user_id)
 
-        # Query for all messages, with the sender's user data
         query = """SELECT messages.*,
                 first_name, last_name, email, senders.created_at as sender_created_at, senders.updated_at as sender_updated_at
                 FROM messages
@@ -29,11 +27,9 @@ class Message:
                 WHERE receiver_id =  %(id)s"""
         results = connectToMySQL(db).query_db(query, {"id": user_id})
 
-        # Create and populate a list of message objects
         messages = []
 
         for message in results:
-            # Make the sender object
             sender_data = {
                 "id": message["sender_id"],
                 "first_name": message["first_name"],
@@ -44,7 +40,6 @@ class Message:
             }
             sender = user.User(sender_data)
 
-            # Make the message object
             message = {
                 "id": message["id"],
                 "content": message["content"],
