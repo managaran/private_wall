@@ -32,7 +32,6 @@ class User:
         data = {"email": email}
         query = "SELECT * FROM users WHERE email = %(email)s;"
         result = connectToMySQL(db).query_db(query, data)
-        # Didn't find a matching user
         if len(result) < 1:
             return False
         return cls(result[0])
@@ -44,7 +43,6 @@ class User:
         query = "SELECT * FROM users WHERE id = %(id)s;"
         result = connectToMySQL(db).query_db(query, data)
 
-        # Didn't find a matching user
         if len(result) < 1:
             return False
         return cls(result[0])
@@ -61,7 +59,6 @@ class User:
         return users
 
     @classmethod
-    # fetches an existing user after authenticating
     def authenticated_user_by_input(cls, user_input):
 
         valid = True
@@ -74,7 +71,6 @@ class User:
 
         else:
 
-            # Retrieve the hashed password to compare
             data = {
                 "email": user_input["email"]
             }
@@ -97,17 +93,14 @@ class User:
     @classmethod
     def create_valid_user(cls, user):
 
-        # Validate user
         if not cls.is_valid(user):
             return False
 
-        # Hash password
         pw_hash = bcrypt.generate_password_hash(user['password'])
         user = user.copy()
         user["password"] = pw_hash
         print("User after adding pw: ", user)
 
-        # Insert user into DB
         query = """
                 INSERT into users (first_name, last_name, email, password)
                 VALUES (%(first_name)s, %(last_name)s, %(email)s, %(password)s);"""
